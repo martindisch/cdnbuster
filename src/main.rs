@@ -10,7 +10,7 @@ use std::{
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let client = Client::builder().http1_only().build()?;
+    let client = Client::builder().use_rustls_tls().http1_only().build()?;
     let mut durations = Vec::new();
 
     for _ in 0..100 {
