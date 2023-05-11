@@ -1,0 +1,23 @@
+{
+  "name": "cdnbuster",
+  "version": "1.0.0",
+  "description": " HTTP request timings at scale",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martindisch/cdnbuster.git"
+  },
+  "author": "Martin Disch <martindisch@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/martindisch/cdnbuster/issues"
+  },
+  "homepage": "https://github.com/martindisch/cdnbuster#readme",
+  "dependencies": {
+    "superagent": "^8.0.9",
+    "superagent-node-http-timings": "^1.0.1"
+  }
+}
