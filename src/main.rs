@@ -12,15 +12,15 @@ use std::{
 async fn main() -> Result<(), Box<dyn Error>> {
     let client = Client::builder()
         .use_rustls_tls()
-        .http2_prior_knowledge()
+        .http3_prior_knowledge()
         .build()?;
     let mut durations = Vec::new();
 
-    for _ in 0..100 {
+    for _ in 0..1000 {
         let now = Instant::now();
         client
             .get("https://media.s-bol.com/BpyMDBY9kjLJ/g00KJD/550x335.jpg")
-            .version(Version::HTTP_2)
+            .version(Version::HTTP_3)
             .send()
             .await?;
         let elapsed = now.elapsed();
