@@ -13,11 +13,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     for _ in 0..101 {
         let now = Instant::now();
-        client
-            .get("https://media.s-bol.com/BpyMDBY9kjLJ/g00KJD/550x335.jpg")
-            .version(http_version)
-            .send()
-            .await?;
+        client.get(&args.url).version(http_version).send().await?;
         let elapsed = now.elapsed();
         println!("{elapsed:.2?}");
         durations.push(elapsed);
@@ -41,6 +37,10 @@ fn build_client(http_version: u32) -> Result<(Client, Version), reqwest::Error> 
 #[derive(Parser)]
 #[command(author, version, about)]
 struct Arguments {
+    /// The HTTP version to use.
     #[arg(long)]
     http: u32,
+
+    /// The resource to request.
+    url: String,
 }
