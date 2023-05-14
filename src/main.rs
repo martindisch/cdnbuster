@@ -1,7 +1,3 @@
-// Images
-// https://www.galaxus.ch/im/Files/5/4/5/9/8/0/8/9/Master_4_Picture_PNG_schwarz_Solar_L.png?impolicy=ProductTileImage&resizeWidth=648&resizeHeight=486&cropWidth=648&cropHeight=486&resizeType=downsize&quality=high
-// https://media.s-bol.com/BpyMDBY9kjLJ/g00KJD/550x335.jpg
-
 use reqwest::{Client, Version};
 use std::{
     error::Error,
@@ -16,7 +12,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .build()?;
     let mut durations = Vec::new();
 
-    for _ in 0..1000 {
+    for _ in 0..101 {
         let now = Instant::now();
         client
             .get("https://media.s-bol.com/BpyMDBY9kjLJ/g00KJD/550x335.jpg")
@@ -28,8 +24,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
         durations.push(elapsed);
     }
 
-    let average = durations.iter().sum::<Duration>() / durations.len() as u32;
-    println!("Average: {average:.2?}");
+    let average = durations[1..].iter().sum::<Duration>() / durations.len() as u32;
+    println!("Average (excluding first request): {average:.2?}");
 
     Ok(())
 }
