@@ -1,3 +1,4 @@
+use clap::Parser;
 use reqwest::{Client, Version};
 use std::{
     error::Error,
@@ -6,17 +7,15 @@ use std::{
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let client = Client::builder()
-        .use_rustls_tls()
-        .http3_prior_knowledge()
-        .build()?;
+    let args = Arguments::parse();
+    let (client, http_version) = build_client(args.http)?;
     let mut durations = Vec::new();
 
     for _ in 0..101 {
         let now = Instant::now();
         client
             .get("https://media.s-bol.com/BpyMDBY9kjLJ/g00KJD/550x335.jpg")
-            .version(Version::HTTP_3)
+            .version(http_version)
             .send()
             .await?;
         let elapsed = now.elapsed();
@@ -28,4 +27,20 @@ async fn main() -> Result<(), Box<dyn Error>> {
     println!("Average (excluding first request): {average:.2?}");
 
     Ok(())
+}
+
+fn build_client(http_version: u32) -> Result<(Client, Version), reqwest::Error> {
+    let builder = Client::builder().use_rustls_tls();
+    Ok(match http_version {
+        3 => (builder.http3_prior_knowledge().build()?, Version::HTTP_3),
+        2 => (builder.http2_prior_knowledge().build()?, Version::HTTP_2),
+        _ => (builder.http1_only().build()?, Version::HTTP_11),
+    })
+}
+
+#[derive(Parser)]
+#[command(author, version, about)]
+struct Arguments {
+    #[arg(long)]
+    http: u32,
 }
