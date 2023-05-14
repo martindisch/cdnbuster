@@ -1,20 +1,26 @@
 use clap::Parser;
+use eyre::{eyre, Result};
 use reqwest::{Client, Version};
-use std::{
-    error::Error,
-    time::{Duration, Instant},
-};
+use std::time::{Duration, Instant};
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
+async fn main() -> Result<()> {
     let args = Arguments::parse();
     let (client, http_version) = build_client(args.http)?;
     let mut durations = Vec::new();
 
     for _ in 0..101 {
         let now = Instant::now();
-        client.get(&args.url).version(http_version).send().await?;
+        let response = client.get(&args.url).version(http_version).send().await?;
         let elapsed = now.elapsed();
+
+        if !response.status().is_success() {
+            Err(eyre!(
+                "Server responded with error code {}",
+                response.status()
+            ))?
+        }
+
         println!("{elapsed:.2?}");
         durations.push(elapsed);
     }

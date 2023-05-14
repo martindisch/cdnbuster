@@ -3,6 +3,7 @@ The MIT License
 
 applies to:
 - clap, Copyright (c) Individual contributors
+- eyre
 - quinn, Copyright (c) 2018 The quinn Developers
 - reqwest, Copyright (c) 2016 Sean McArthur
 - tokio, Copyright (c) 2023 Tokio Contributors
@@ -30,6 +31,7 @@ The Apache License
 
 applies to:
 - clap
+- eyre
 - quinn
 - reqwest
 -------------------------------------------------------------------------------
